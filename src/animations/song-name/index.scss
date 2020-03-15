@@ -1,0 +1,12 @@
+.song-name {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  &__text {
+    position: relative;
+    font-size: 100px;
+    font-weight: 700;
+  }
+}

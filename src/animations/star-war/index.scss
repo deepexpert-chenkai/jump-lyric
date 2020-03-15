@@ -1,0 +1,17 @@
+.star-war {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  width: 80%;
+  height: 200px;
+  transform: translate(-50%, 0);
+
+  &__line {
+    position: absolute;
+    top:0;
+    left: 0;
+    width: 100%;
+    font-size: 80px;
+    font-weight: 700;
+  }
+}

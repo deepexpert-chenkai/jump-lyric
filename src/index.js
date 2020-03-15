@@ -1,26 +1,31 @@
 import React from 'react';
+import axios from 'axios';
 import animations from '~animations';
 import Lyric from '~helpers/lyric-parser';
+import Tiktok from '~helpers/tik-tok';
 import './index.scss';
 
-const lyricStr = "[00:04.630]I won't just survive\n[00:09.500]Oh, you will see me thrive\n[00:14.300]Can't write my story\n[00:18.770]I'm beyond the archetype\n[00:23.710]I won't just conform\n[00:27.950]No matter how you shake my core\n[00:32.980]Cause my roots, they run deep, oh\n[00:39.190]Oh ye of so little faith\n[00:41.660]Don't doubt it, don't doubt it\n[00:43.630]Victory is in my veins\n[00:46.120]I know it, I know it\n[00:48.640]And I will not negotiate\n[00:50.880]I'll fight it, I'll fight it\n[00:53.600]I will transform\n[00:59.470]When, when the fire's at my feet again\n[01:06.420]And the vultures all start circling\n[01:10.900]They're whispering, \"you're out of time.\"\n[01:16.450]But still, I rise\n[01:20.200]This is no mistake, no accident\n[01:25.100]When you think the final end is in, think again\n[01:32.610]Don't be surprised, I will still rise\n[01:39.170]I must stay conscious\n[01:43.580]Through the menace and chaos\n[01:48.300]So I call on my angels\n[01:53.180]They say...\n[01:54.780]Oh ye of so little faith\n[01:57.460]Don't doubt it, don't doubt it\n[01:59.420]Victory is in your veins\n[02:01.890]You know it, you know it\n[02:04.400]And you will not negotiate\n[02:06.720]Just fight it, just fight it\n[02:09.080]And be transformed\n[02:14.640]Cause when, when the fire's at my feet again\n[02:21.640]And the vultures all start circling\n[02:25.970]They're whispering, \"you're out of time.\"\n[02:31.530]But still, I rise\n[02:35.750]This is no mistake, no accident\n[02:40.750]When you think the final end is in, think again\n[02:48.010]Don't be surprised, I will still rise\n[02:53.950]Don't doubt it, don't doubt it\n[02:56.420]Oh oh, oh oh\n[02:58.290]You know it, you know it\n[03:01.000]Still rise\n[03:03.360]Just fight it, just fight it\n[03:07.440]Don't be surprised, I will still rise"
+const lyricStr = "[00:00.81]50, 50 Feet up underground\n[00:04.60]You know I keep my feet on the sound\n[00:08.42]50, 50 Feet up underground\n[00:12.11]You know I keep my feet on the sound\n[00:15.73]I'm around, baby I'm around\n[00:19.38]Underground, but you know I'm around\n[00:23.10]I was down, lately I've been down\n[00:26.93]Ran around, now I'm back I'm found\n[00:30.68]Pour the wine up\n[00:33.17]You're silent\n[00:35.20]Why though?\n[00:36.76]You know you like\n[00:38.75]This style of\n[00:40.51]This side of\n[00:42.51]I know you like it\n[00:44.95]I ****** you right, I did\n[00:47.08]I loved you every single night\n[00:48.67]You know you like, that dear\n[00:50.62]You know you like it when I ride\n[00:52.45]You owe me all of it\n[00:54.12]You told me every single time\n[00:56.30]I'm holding on to it\n[00:58.40]I'm holding everything that's mine\n[01:00.50]I ****** you right, I did\n[01:01.85]I loved you every single night\n[01:03.89]You know you like, that dear\n[01:05.76]You know you like when I ride\n[01:07.77]You owe me all of it\n[01:09.74]You told me every single time\n[01:11.54]I'm holding on to it\n[01:14.11]I'm holding everything that's mine\n[01:15.50]You know it\n[01:16.64]Popped a pill\n[01:17.45]What's the deal\n[01:18.27]I don't feel it anymore\n[01:20.22]Popped, popped a pill\n[01:21.18]What's that?\n[01:22.13]You know I've been down on the floor\n[01:23.96]I cried everyday\n[01:25.22]You know this ain't real anymore\n[01:27.83]It's a dream on the door\n[01:29.71]It's a dream on the board\n[01:31.71]It's the life you warned me\n[01:33.79]Hold tighter\n[01:35.56]Reminiscing on old times\n[01:37.40]With my red lighter\n[01:39.25]Said you'd feel it in your throat\n[01:41.30]When I sing\n[01:42.75]You know what I mean\n[01:44.56]You know what I mean\n[01:45.93]I ****** you right, I did\n[01:47.64]I loved you every single night\n[01:49.48]You know you like, that dear\n[01:51.53]You know you like it when I ride\n[01:53.15]You owe me all of it\n[01:56.43]You told me every single time\n[01:57.18]I'm holding on to it\n[01:59.22]I'm holding everything that's mine\n[02:01.15]I ****** you right, I did\n[02:02.79]I loved you every single night\n[02:04.70]You know you like, that dear\n[02:06.68]You know I like it when I ride\n[02:08.69]You owe me all of it\n[02:10.69]You told me every single time\n[02:12.40]I'm holding on to it\n[02:14.36]I'm holding everything that's mine\n[02:16.28]You know it\n[02:17.84]50, 50 Feet up underground\n[02:21.59]You know I keep my feet on the sound\n[02:25.36]50, 50 Feet up underground\n[02:29.29]You know I keep my feet on the sound\n[02:32.23]"
 function handler({lineNum, txt}){
   console.log(txt);
   // this hanlder called when lineNum change
 }
 
-const framePerSecond = 30;
+const framePerSecond = 60;
 
 export default class App extends React.Component {
   constructor(props) {
     super(props);
 
     this.lyric = new Lyric(lyricStr, this.lyricHandler);
+    this.tiktok = new Tiktok(this.timeHandler);
     console.log('this.lyric: ', this.lyric);
     this.lyric.play();
     this.state = {
       time: 0,
       currentIndex: 0,
+      play: false,
+      audioSrc: null,
       currentLines: this.lyric.lines,
       arranges: this.arrangeAnimationForLyric(this.lyric.lines)
     }
@@ -29,10 +34,32 @@ export default class App extends React.Component {
   componentDidMount() {
     this.lyric = new Lyric(lyricStr, this.lyricHandler);
     console.log('this.lyric: ', this.lyric);
-    this.lyric.play();
 
-    this.beforeTime = new Date();
-    this.startRequestFrame();
+    this.getMusic();
+  }
+
+  timeHandler = (passTime) => {
+    if(passTime > 0) {
+      this.setState({
+        time: this.state.time + passTime
+      })
+    }
+  }
+
+  getMusic = () => {
+    axios.get('')
+    .then((res) => {
+      this.setState((res) => {
+        this.setState({
+          audioSrc: res.data,
+          play: true,
+        },() => {
+          this.audioRef.play();
+          this.lyric.play();
+          this.tiktok.play();
+        })
+      })
+    })
   }
 
   arrangeAnimationForLyric = (lines) => {
@@ -41,7 +68,7 @@ export default class App extends React.Component {
     if(lines[0] && lines[0].time > 0) {
       arrangeResult.push({
         animation: 'song-name',
-        lines: {time: 0, txt: 'Song Name'},
+        lines: {time: 0, txt: '50 Feet'},
         startTime: 0,
         endTime: lines[0].time,
       })
@@ -65,20 +92,6 @@ export default class App extends React.Component {
     return arrangeResult;
   }
 
-  startRequestFrame = () => {
-    window.requestAnimationFrame(() => {
-      const currentTime = new Date();
-      if(currentTime - this.beforeTime > 1000/framePerSecond) {
-        this.setState({
-          time: this.state.time + (currentTime - this.beforeTime),
-        });
-        this.beforeTime = currentTime;
-      }
-      
-      this.startRequestFrame();
-    })
-  }
-
   lyricHandler = (lineNum, txt) => {
     console.log('lineNum: ', lineNum);
     this.setState({
@@ -89,23 +102,52 @@ export default class App extends React.Component {
   getCurrentArrange = () => {
     const { time, arranges }  = this.state;
     let currentArrange = null;
-    for(let arrange of arranges) {
-      if(arrange.startTime >= time) {
+    let i = arranges.length-1;
+    for(; i>= 0; i--) {
+      const arrange = arranges[i];
+      if(arrange.startTime <= time) {
         currentArrange = arrange;
         break;
       }
     }
-    return currentArrange;
+    return { currentArrange, currentIndex: i};
+  }
+
+  toggleMusic = () => {
+    if(this.state.play) {
+      this.audioRef.pause();
+      this.tiktok.pause();
+      this.lyric.pause();
+      this.setState({
+        play: false
+      })
+    } else {
+      this.audioRef.play();
+      this.tiktok.play();
+      this.setState({
+        play: true
+      });
+    }
   }
 
   render() {
-    const currentArrange = this.getCurrentArrange();
+    console.log(this.state);
+    const {currentArrange, currentIndex} = this.getCurrentArrange();
+    console.log('currentArrange: ', currentArrange);
+    console.log('currentIndex: ', currentIndex);
     const CurrentAnimation = animations[currentArrange.animation];
     return (
       <div className="app">
         {/* <StarWar lines={this.state.currentLines} index={this.state.currentIndex} /> */}
         { this.state.time}
-        <CurrentAnimation lines={currentArrange.lines} time={this.state.time} />
+        <button onClick={this.toggleMusic}>
+          play/stop
+        </button>
+        <audio
+          ref={(a) => {this.audioRef = a}}
+          src='/50feet.mp3'
+        />
+        <CurrentAnimation lines={currentArrange.lines} time={this.state.time} key={currentIndex}/>
       </div>
     )
   }

@@ -9,8 +9,12 @@ export default class StarWar extends React.Component {
     }
   }
 
-  componentWillReceiveProps(nextProps) {
-    
+  getStyle = (passTime) => {
+    const disappearTime = 5000;
+    return {
+      top: -(passTime/disappearTime)*300,
+      opacity: 1- (passTime/disappearTime),
+    }
   }
 
   render() {
@@ -19,8 +23,14 @@ export default class StarWar extends React.Component {
     
 
     return (
-      <div>
-        888
+      <div className="star-war">
+        <For each='line' of={lines} index="idx">
+          <If condition={line.time <= time}>
+            <div className="star-war__line" style={this.getStyle(time-line.time)}>
+              {line.txt}
+            </div>
+          </If>
+        </For>
       </div>
     )
   }
