@@ -1,6 +1,75 @@
 
 @import '~animations/index.scss';
 
+
+$color-light: #f4f5f5;
 body {
-  background-color: #999999;
+  margin: 0;
+
+  @media screen and (max-width: 500px){
+    font-size: 40px;
+  }
+
+  @media screen and (min-width: 500px) and (max-width: 1280px){
+    font-size: 80px;
+  } 
+  
+  @media screen and (min-width: 1280px){
+    font-size: 120px;
+  }
+}
+
+.main {
+  width: 100%;
+  height: 100%;
+}
+
+.app {
+  width: 100%;
+  height: 100%;
+  background-color: $color-light;
+
+  &__controller {
+    position: fixed;
+    right: 12px;
+    bottom: 12px;
+  }
+
+  &__time {
+    font-size: 20px;
+    line-height: 50px;
+    margin-right: 12px;
+  }
+
+  &__btn {
+    float: right;
+
+    &--ini {
+      position: fixed;
+      top: calc(50% + 100px);
+      left: calc(50% - 35px);
+
+      svg {
+        width: 70px !important;
+        height: 70px !important;
+      }
+    }
+
+    svg {
+      cursor: pointer;
+      width: 50px;
+      height: 50px;
+    }
+  }
+
+  
+
+  &--dark {
+    background-color: #000;
+    color: $color-light;
+
+    svg {
+      fill: $color-light;
+    }
+  }
 }

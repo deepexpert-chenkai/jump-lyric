@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "axios": "^0.19.2",
+    "classnames": "^2.2.6",
     "lyric-parser": "^1.0.1",
     "react": "^16.13.0",
     "react-dom": "^16.13.0"

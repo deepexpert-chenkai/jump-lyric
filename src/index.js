@@ -1,5 +1,6 @@
 import React from 'react';
 import axios from 'axios';
+import classnames from 'classnames';
 import animations from '~animations';
 import Lyric from '~helpers/lyric-parser';
 import Tiktok from '~helpers/tik-tok';
@@ -19,23 +20,33 @@ export default class App extends React.Component {
 
     this.lyric = new Lyric(lyricStr, this.lyricHandler);
     this.tiktok = new Tiktok(this.timeHandler);
-    console.log('this.lyric: ', this.lyric);
-    this.lyric.play();
     this.state = {
       time: 0,
       currentIndex: 0,
       play: false,
       audioSrc: null,
+      darkmode: true,
       currentLines: this.lyric.lines,
       arranges: this.arrangeAnimationForLyric(this.lyric.lines)
     }
   }
 
   componentDidMount() {
-    this.lyric = new Lyric(lyricStr, this.lyricHandler);
-    console.log('this.lyric: ', this.lyric);
+    // this.getMusic();
+    this.audioRef.addEventListener('canplay', () => {
+      console.log('can play');
+    });
+    this.audioRef.addEventListener('ended', this.resetState)
+  }
 
-    this.getMusic();
+  resetState = () => {
+    this.setState({
+      play: false,
+      time: 0
+    }, () => {
+      this.tiktok.pause();
+      this.audioRef.pause();
+    })
   }
 
   timeHandler = (passTime) => {
@@ -46,29 +57,13 @@ export default class App extends React.Component {
     }
   }
 
-  getMusic = () => {
-    axios.get('')
-    .then((res) => {
-      this.setState((res) => {
-        this.setState({
-          audioSrc: res.data,
-          play: true,
-        },() => {
-          this.audioRef.play();
-          this.lyric.play();
-          this.tiktok.play();
-        })
-      })
-    })
-  }
-
   arrangeAnimationForLyric = (lines) => {
     const arrangeResult = [];
     let group = [];
     if(lines[0] && lines[0].time > 0) {
       arrangeResult.push({
         animation: 'song-name',
-        lines: {time: 0, txt: '50 Feet'},
+        lines: [{time: 0, txt: '50 Feet'}],
         startTime: 0,
         endTime: lines[0].time,
       })
@@ -117,7 +112,6 @@ export default class App extends React.Component {
     if(this.state.play) {
       this.audioRef.pause();
       this.tiktok.pause();
-      this.lyric.pause();
       this.setState({
         play: false
       })
@@ -131,21 +125,32 @@ export default class App extends React.Component {
   }
 
   render() {
-    console.log(this.state);
     const {currentArrange, currentIndex} = this.getCurrentArrange();
-    console.log('currentArrange: ', currentArrange);
-    console.log('currentIndex: ', currentIndex);
     const CurrentAnimation = animations[currentArrange.animation];
     return (
-      <div className="app">
-        {/* <StarWar lines={this.state.currentLines} index={this.state.currentIndex} /> */}
-        { this.state.time}
-        <button onClick={this.toggleMusic}>
-          play/stop
-        </button>
+      <div className={ classnames("app", {'app--dark': this.state.darkmode})}>
+        <div className="app__controller">
+          <If condition={this.state.time !== 0}>
+            <span className="app__time">{ this.state.time }</span>
+          </If>
+          <div 
+            className={ classnames("app__btn", {'app__btn--ini': this.state.time === 0}) }
+            onClick={this.toggleMusic} 
+            role="presentation"
+          >
+            <Choose>
+              <When condition={this.state.play}>
+                <svg t="1584543747726" class="icon" viewBox="0 0 1024 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="2514" width="200" height="200"><path d="M512 0C230.4 0 0 230.4 0 512c0 281.6 230.4 512 512 512 117.76 0 227.84-38.4 320-110.08 10.24-7.68 12.8-23.04 5.12-35.84-7.68-10.24-23.04-12.8-35.84-5.12C719.36 939.52 616.96 972.8 512 972.8 256 972.8 51.2 768 51.2 512 51.2 256 256 51.2 512 51.2 768 51.2 972.8 256 972.8 512c0 87.04-25.6 171.52-69.12 243.2-7.68 12.8-2.56 28.16 7.68 33.28 12.8 7.68 28.16 2.56 33.28-7.68 51.2-79.36 76.8-174.08 76.8-271.36C1024 230.4 793.6 0 512 0z" p-id="2515"></path><path d="M686.08 307.2 337.92 307.2c-17.92 0-30.72 12.8-30.72 30.72l0 348.16c0 17.92 12.8 30.72 30.72 30.72l348.16 0c17.92 0 30.72-12.8 30.72-30.72L716.8 337.92C716.8 320 704 307.2 686.08 307.2zM665.6 657.92c0 5.12-2.56 7.68-7.68 7.68L366.08 665.6c-5.12 0-7.68-2.56-7.68-7.68L358.4 366.08c0-5.12 2.56-7.68 7.68-7.68l291.84 0c5.12 0 7.68 2.56 7.68 7.68L665.6 657.92z" p-id="2516"></path></svg>
+              </When>
+              <Otherwise>
+                <svg t="1584543632169" class="icon" viewBox="0 0 1026 1024" version="1.1" xmlns="http://www.w3.org/2000/svg" p-id="1775" width="200" height="200"><path d="M768 880c-86.4 60.8-192 89.6-307.2 76.8C246.4 931.2 80 755.2 64 540.8 48 262.4 288 32 569.6 67.2c195.2 25.6 352 176 384 368 19.2 115.2-6.4 224-60.8 310.4-9.6 12.8-6.4 28.8 3.2 41.6 16 16 38.4 12.8 51.2-6.4 64-105.6 96-233.6 70.4-368C976 211.2 812.8 48 611.2 9.6c-348.8-64-649.6 224-604.8 569.6 28.8 230.4 217.6 416 451.2 441.6 131.2 12.8 252.8-19.2 348.8-89.6 16-12.8 19.2-35.2 6.4-48-16-12.8-32-12.8-44.8-3.2z" p-id="1776"></path><path d="M438.4 758.4c-16 0-28.8-12.8-28.8-28.8V294.4c0-16 12.8-28.8 28.8-28.8s28.8 12.8 28.8 28.8v435.2c0 16-12.8 28.8-28.8 28.8z" p-id="1777"></path><path d="M675.2 531.2c-9.6 9.6-28.8 9.6-38.4 0L419.2 313.6c-9.6-9.6-9.6-28.8 0-38.4 9.6-9.6 28.8-9.6 38.4 0l217.6 217.6c9.6 9.6 9.6 28.8 0 38.4z" p-id="1778"></path><path d="M419.2 748.8c-9.6-9.6-9.6-28.8 0-38.4l217.6-217.6c9.6-9.6 28.8-9.6 38.4 0 9.6 9.6 9.6 28.8 0 38.4L457.6 748.8c-9.6 9.6-28.8 9.6-38.4 0z" p-id="1779"></path></svg>
+              </Otherwise>
+            </Choose>
+          </div>
+        </div>
         <audio
           ref={(a) => {this.audioRef = a}}
-          src='/50feet.mp3'
+          src='./50feet.mp3'
         />
         <CurrentAnimation lines={currentArrange.lines} time={this.state.time} key={currentIndex}/>
       </div>
