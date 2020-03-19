@@ -46,8 +46,9 @@ body {
 
     &--ini {
       position: fixed;
-      top: calc(50% + 100px);
-      left: calc(50% - 35px);
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, 100px);
 
       svg {
         width: 70px !important;
@@ -62,7 +63,14 @@ body {
     }
   }
 
-  
+  &__icon-start {
+    display: inline-block;
+  }
+
+  &__icon-next {
+    margin-left: 12px;
+    transform: rotate(-90deg);
+  }
 
   &--dark {
     background-color: #000;

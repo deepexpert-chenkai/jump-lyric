@@ -26,7 +26,7 @@ export default class StarWar extends React.Component {
       <div className="star-war">
         <For each='line' of={lines} index="idx">
           <If condition={line.time <= time}>
-            <div className="star-war__line" style={this.getStyle(time-line.time)}>
+            <div className="star-war__line" key={idx} style={this.getStyle(time-line.time)}>
               {line.txt}
             </div>
           </If>
