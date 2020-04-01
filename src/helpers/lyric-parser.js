@@ -39,6 +39,13 @@ export default class Lyric {
     }
   }
 
+  _trimSecond (s) {
+    if(s.length === 3) {
+      return parseInt(s, 10)/10;
+    }
+    return s;
+  }
+
   _initLines() {
     const lines = this.lrc.split('\n')
     const offset = parseInt(this.tags['offset']) || 0
@@ -49,13 +56,12 @@ export default class Lyric {
         const txt = line.replace(timeExp, '').trim()
         if (txt) {
           this.lines.push({
-            time: result[1] * 60 * 1000 + result[2] * 1000 + (result[3] || 0) * 10 + offset,
+            time: result[1] * 60 * 1000 + result[2] * 1000 + (this._trimSecond(result[3]) || 0) * 10 + offset,
             txt
           })
         }
       }
     }
-
     this.lines.sort((a, b) => {
       return a.time - b.time
     })

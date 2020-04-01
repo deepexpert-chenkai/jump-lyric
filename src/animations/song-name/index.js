@@ -5,7 +5,6 @@ export default class SongName extends React.Component {
 
   render() {
     const { time, lines } = this.props;
-    console.log('lines: ', lines);
     const top = sinShake(time);
     return (
       <div className="song-name">

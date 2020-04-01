@@ -1,19 +1,22 @@
 import React from 'react';
+import { getBodyFontSize } from '~helpers/index';
 
 export default class StarWar extends React.Component {
   constructor() {
     super();
 
+    this.fontSize = getBodyFontSize();
     this.state = {
       showTextList: []
     }
   }
 
   getStyle = (passTime) => {
-    const disappearTime = 5000;
+    const disappearTime = 6000;
     return {
       top: -(passTime/disappearTime)*300,
       opacity: 1- (passTime/disappearTime),
+      transform: `scale(${(1- (passTime/disappearTime)*0.3)}`,
     }
   }
 

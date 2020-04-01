@@ -29,6 +29,14 @@ body {
   height: 100%;
   background-color: $color-light;
 
+  &__title {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    font-weight: 700;
+  }
+
   &__controller {
     position: fixed;
     right: 12px;
@@ -41,6 +49,19 @@ body {
     margin-right: 12px;
   }
 
+  &__icon-start {
+    display: inline-block;
+  }
+
+  &__icon-next {
+    margin-left: 12px;
+    transform: rotate(-90deg);
+  }
+
+  &__loading-icon {
+    animation: loading-rotate .8s linear infinite;
+  }
+
   &__btn {
     float: right;
 
@@ -51,8 +72,12 @@ body {
       transform: translate(-50%, 100px);
 
       svg {
-        width: 70px !important;
+        width: 70px !important; 
         height: 70px !important;
+      }
+
+      .app__icon-next {
+        margin-left: 32px;
       }
     }
 
@@ -63,15 +88,6 @@ body {
     }
   }
 
-  &__icon-start {
-    display: inline-block;
-  }
-
-  &__icon-next {
-    margin-left: 12px;
-    transform: rotate(-90deg);
-  }
-
   &--dark {
     background-color: #000;
     color: $color-light;
@@ -80,4 +96,9 @@ body {
       fill: $color-light;
     }
   }
+}
+
+@keyframes loading-rotate {
+  0%{transform:rotate(0deg);}
+  100%{transform:rotate(360deg);}
 }
